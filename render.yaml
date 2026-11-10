@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: subway-teamplanner
+    runtime: node
+    region: frankfurt
+    plan: starter
+    numInstances: 1
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    disk:
+      name: planner-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DIR
+        value: /var/data
+      - key: ADMIN_SETUP_TOKEN
+        generateValue: true
+      - key: ADMIN_RECOVERY_TOKEN
+        generateValue: true
